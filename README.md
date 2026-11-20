@@ -1,16 +1,43 @@
+<div align="center">
+
 # dev-utilities
 
-Small personal scripts and tools I use for my own workflow, consolidated
-into one repo instead of scattered as separate untracked directories.
-Each subdirectory is independent — there's no shared code between them.
+Three small tools from my own workflow: a GitLab issue importer, a GitLab time-tracking reporter and a Python virtualenv cleaner.
 
-- **`python-env-cleaner/`** — finds and removes stray Python virtualenvs
-  (`venv`/`.venv` folders, `virtualenvwrapper` envs, conda envs) across my
-  home directory. Destructive (`rm -rf`), prompts before each removal.
-- **`gitlab-issue-importer/`** — a React + Vite app for importing GitLab
-  issues.
-- **`gitlab-hours-tracker/`** — shell scripts that pull time-tracking data
-  (`/spend` notes) and off-hours commit activity from a GitLab project via
-  its API.
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![Bash](https://img.shields.io/badge/Bash-4EAA25?logo=gnubash&logoColor=white)
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
 
-See each subdirectory's own README for details, setup, and caveats.
+</div>
+
+Each folder is independent and has its own README with setup and caveats. There is no shared code between them.
+
+## The tools
+
+| Tool | What it does | Stack |
+|---|---|---|
+| [`gitlab-issue-importer/`](gitlab-issue-importer) | Turns a Markdown issue template into a form and creates the issue in GitLab through the REST API, or downloads the filled-in Markdown. Can also prefill the form from existing open issues. Runs entirely in the browser; the access token lives in memory only. | React 19, Vite 7, Tailwind |
+| [`gitlab-hours-tracker/`](gitlab-hours-tracker) | `hours-getter.sh` sums the `/spend` time-tracking notes per user across a project. `outside-hours.sh` lists commits made outside a fixed weekly time window. | Bash, curl, jq, GNU parallel |
+| [`python-env-cleaner/`](python-env-cleaner) | Finds leftover `venv`, `.venv`, virtualenvwrapper and conda environments under your home directory and deletes them one prompt at a time. | Bash |
+
+## Getting started
+
+```bash
+git clone https://github.com/Wolfi-OwO/dev-utilities.git
+cd dev-utilities
+
+# issue importer: open http://localhost:5173
+cd gitlab-issue-importer && npm install && npm run dev
+
+# hours tracker: set GITLAB_TOKEN (api scope) and edit PROJECT_ID at the top of the script
+cd gitlab-hours-tracker && GITLAB_TOKEN=... ./hours-getter.sh
+
+# env cleaner: interactive, asks before every deletion
+cd python-env-cleaner && ./cleanup_py_envs.sh
+```
+
+`python-env-cleaner` runs `rm -rf` after you answer `y`. Read the prompt before you do.
+
+## License
+
+MIT, see [LICENSE](LICENSE).
